@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time in a Bottle - Conversor de Tempo RPG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #23272A 0%, #2C2F33 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #36393F;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #5865F2;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #5865F2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .credit {
+            color: #B9BBBE;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .info-section {
+            background-color: #2C2F33;
+            border-left: 4px solid #5865F2;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 6px;
+        }
+
+        .info-section h2 {
+            color: #5865F2;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            color: #DCDDDE;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .converter-section {
+            background-color: #2C2F33;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #B9BBBE;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #40444B;
+            border: 2px solid #5865F2;
+            border-radius: 6px;
+            color: #FFFFFF;
+            font-size: 1em;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #57F287;
+        }
+
+        .results {
+            background-color: #2C2F33;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            background-color: #40444B;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #5865F2;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            color: #B9BBBE;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            color: #57F287;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .xp-bonus {
+            background-color: #5865F2;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .xp-bonus .xp-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #57F287;
+        }
+
+        .rules-box {
+            background-color: #23272A;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .rules-box h3 {
+            color: #5865F2;
+            margin-bottom: 15px;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules-box li {
+            color: #DCDDDE;
+            padding: 8px 0;
+            border-bottom: 1px solid #40444B;
+        }
+
+        .rules-box li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-box li:before {
+            content: "• ";
+            color: #5865F2;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .input-helper {
+            display: block;
+            color: #72767D;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .info-section h2,
+            .converter-section h2,
+            .results h2 {
+                font-size: 1.1em;
+            }
+
+            .result-value {
+                font-size: 1.2em;
+            }
+
+            .xp-bonus .xp-value {
+                font-size: 1.5em;
+            }
+
+            .rules-box {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .result-item {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Time in a Bottle</h1>
+            <p class="credit">By Salada de Flutter</p>
+        </div>
+
+        <div class="info-section">
+            <h2>Sistema de Passagem de Tempo</h2>
+            <p>No universo do roleplay, o tempo passa 4 vezes mais rápido. Um ano no RP possui apenas 4 meses (120 dias).</p>
+            <p>Cada semana real equivale a um mês completo no jogo. Isso significa que em apenas um mês real, um ano inteiro se passa no RP.</p>
+        </div>
+
+        <div class="converter-section">
+            <h2 style="color: #5865F2; margin-bottom: 20px;">Calculadora</h2>
+            
+            <div class="input-group">
+                <label for="realHours">Quanto tempo passou na vida real?</label>
+                <input type="number" id="realHours" min="0" step="1" placeholder="Digite as horas..." oninput="convertTime()">
+                <span class="input-helper">Em horas</span>
+            </div>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <h2 style="color: #5865F2; margin-bottom: 20px;">Tempo no RPG</h2>
+            
+            <div class="result-item">
+                <div class="result-label">Tempo exato:</div>
+                <div class="result-value" id="rpExact">0</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">Equivale a:</div>
+                <div class="result-value" id="rpFormatted" style="font-size: 1.3em;">0</div>
+            </div>
+
+            <div class="xp-bonus" id="xpBonus">
+                <div class="result-label" style="color: #FFFFFF;">Experiência acumulada:</div>
+                <div class="xp-value" id="xpValue">0 XP</div>
+                <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.9;">Baseado em 5.000 XP a cada 3 semanas</div>
+            </div>
+        </div>
+
+        <div class="rules-box">
+            <h3>Como funciona</h3>
+            <ul>
+                <li>1 semana real = 1 mês no RP (30 dias)</li>
+                <li>1 mês real (4 semanas) = 4 meses no RP = 1 ano no RP</li>
+                <li>1 ano no RP tem apenas 4 meses (120 dias)</li>
+                <li>O tempo passa 4x mais rápido no RP</li>
+                <li>A cada 3 semanas de jogo você ganha 5.000 XP</li>
+                <li>Atividades em andamento são finalizadas a cada ciclo</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function convertTime() {
+            const realHours = parseFloat(document.getElementById('realHours').value) || 0;
+            
+            if (realHours <= 0) {
+                document.getElementById('results').style.display = 'none';
+                return;
+            }
+
+            // Lógica de conversão:
+            // 1 semana real (7 dias) = 1 mês RP (30 dias)
+            // 1 hora real = (30/7) horas RP ≈ 4.286 horas RP
+            // 1 mês real (4 semanas) = 1 ano RP (120 dias)
+            
+            const rpHours = realHours * (30 / 7);
+            const rpMinutes = rpHours * 60;
+            const rpDays = rpHours / 24;
+            const rpWeeks = rpDays / 7;
+            
+            // XP: a cada 3 semanas RP = 5000 XP
+            const xpGained = Math.floor(rpWeeks / 3) * 5000;
+
+            displayResults(rpMinutes, rpHours, rpDays, rpWeeks, xpGained);
+        }
+
+        function displayResults(minutes, hours, totalDays, totalWeeks, xp) {
+            document.getElementById('results').style.display = 'block';
+            
+            // Tempo exato em horas e minutos
+            const h = Math.floor(hours);
+            const m = Math.floor(minutes % 60);
+            document.getElementById('rpExact').textContent = h + ' horas e ' + m + ' minutos';
+            
+            // Decomposição em unidades maiores
+            let remaining = Math.floor(totalDays);
+            
+            const years = Math.floor(remaining / 365);
+            remaining = remaining % 365;
+            
+            const months = Math.floor(remaining / 30);
+            remaining = remaining % 30;
+            
+            const weeks = Math.floor(remaining / 7);
+            const days = remaining % 7;
+            
+            // Montar string formatada
+            let parts = [];
+            
+            if (years > 0) {
+                parts.push(years + (years === 1 ? ' ano' : ' anos'));
+            }
+            if (months > 0) {
+                parts.push(months + (months === 1 ? ' mês' : ' meses'));
+            }
+            if (weeks > 0) {
+                parts.push(weeks + (weeks === 1 ? ' semana' : ' semanas'));
+            }
+            if (days > 0) {
+                parts.push(days + (days === 1 ? ' dia' : ' dias'));
+            }
+            
+            // Se não houver nenhuma parte, mostrar dias com decimal
+            if (parts.length === 0) {
+                if (totalDays >= 1) {
+                    parts.push(totalDays.toFixed(1) + ' dias');
+                } else {
+                    parts.push('Menos de 1 dia');
+                }
+            }
+            
+            // Juntar as partes
+            let formatted = '';
+            if (parts.length === 1) {
+                formatted = parts[0];
+            } else if (parts.length === 2) {
+                formatted = parts[0] + ' e ' + parts[1];
+            } else {
+                formatted = parts.slice(0, -1).join(', ') + ' e ' + parts[parts.length - 1];
+            }
+            
+            document.getElementById('rpFormatted').textContent = formatted;
+            document.getElementById('xpValue').textContent = xp.toLocaleString('pt-BR') + ' XP';
+        }
+    </script>
+</body>
+</html>
