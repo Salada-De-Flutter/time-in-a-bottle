@@ -1,6 +1,6 @@
 # Time in a Bottle
 
-Conversor de tempo para sistemas de RPG onde o tempo passa de forma diferente da vida real.
+Conversor de tempo de RPG onde o tempo passa de forma diferente da vida real.
 
 ## Sobre
 
